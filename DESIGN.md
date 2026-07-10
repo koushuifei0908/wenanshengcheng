@@ -327,7 +327,7 @@ a:focus-visible { outline: 3px solid rgba(var(--accent-rgb), .24); outline-offse
 ## 产品与安全约束
 
 - 产品名固定为「文案生产」。
-- 模型：火山方舟推理接入点 `ep-20260710183900-84zfb`。
+- 模型：火山方舟推理接入点 `ep-m-20260704212204-cqqj7`。
 - 浏览器仅请求本站服务端 `/api/chat`；服务端再调用模型接口。
 - API Key 只通过部署平台的加密环境变量 `ARK_API_KEY` 注入。
 - GitHub 仓库只提交 `.env.example`，绝不提交真实 `.env`。

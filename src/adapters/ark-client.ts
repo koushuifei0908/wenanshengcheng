@@ -2,7 +2,7 @@ import { AppError } from "@/core/errors";
 import type { ChatRequest } from "@/core/chat";
 
 const DEFAULT_API_URL = "https://ark.cn-beijing.volces.com/api/v3/chat/completions";
-const DEFAULT_MODEL_ID = "ep-20260710183900-84zfb";
+const DEFAULT_MODEL_ID = "ep-m-20260704212204-cqqj7";
 const REQUEST_TIMEOUT_MS = 60_000;
 
 interface ArkConfig {

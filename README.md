@@ -24,7 +24,7 @@
 
 ## 配置说明
 
-配置通过服务端环境变量注入，详见 [docs/CONFIGURATION.md](docs/CONFIGURATION.md)。不要将 `.env.local` 提交到 Git。
+配置通过服务端环境变量注入，默认使用已验证的火山方舟接入点 `ep-m-20260704212204-cqqj7`，详见 [docs/CONFIGURATION.md](docs/CONFIGURATION.md)。不要将 `.env.local` 提交到 Git。
 
 ## 项目结构
 
