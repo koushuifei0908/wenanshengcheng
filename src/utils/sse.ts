@@ -1,21 +1,36 @@
 interface ArkDelta {
-  choices?: Array<{ delta?: { content?: string } }>;
+  choices?: Array<{ delta?: { content?: string }; finish_reason?: string | null }>;
 }
 
-export function extractSseContent(buffer: string): { content: string; rest: string } {
-  const events = buffer.split("\n\n");
+interface ParsedSseEvent {
+  content: string;
+  isComplete: boolean;
+}
+
+export function extractSseContent(buffer: string): { content: string; rest: string; isComplete: boolean } {
+  const events = buffer.replace(/\r\n/g, "\n").split("\n\n");
   const rest = events.pop() ?? "";
-  return { content: events.map(parseSseEvent).join(""), rest };
+  const parsedEvents = events.map(parseSseEvent);
+  return {
+    content: parsedEvents.map((event) => event.content).join(""),
+    rest,
+    isComplete: parsedEvents.some((event) => event.isComplete),
+  };
 }
 
-function parseSseEvent(event: string): string {
+function parseSseEvent(event: string): ParsedSseEvent {
   const dataLine = event.split("\n").find((line) => line.startsWith("data:"));
   const payload = dataLine?.slice(5).trim();
-  if (!payload || payload === "[DONE]") return "";
+  if (!payload) return { content: "", isComplete: false };
+  if (payload === "[DONE]") return { content: "", isComplete: true };
   try {
     const parsed = JSON.parse(payload) as ArkDelta;
-    return parsed.choices?.[0]?.delta?.content ?? "";
+    const choice = parsed.choices?.[0];
+    return {
+      content: choice?.delta?.content ?? "",
+      isComplete: Boolean(choice?.finish_reason),
+    };
   } catch {
-    return "";
+    return { content: "", isComplete: false };
   }
 }

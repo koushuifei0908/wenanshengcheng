@@ -3,6 +3,7 @@ import { logError } from "@/adapters/logger";
 import { createChatStream } from "@/services/chat-service";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
 
 function createErrorResponse(error: unknown): Response {
   const appError = error instanceof AppError

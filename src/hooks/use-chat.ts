@@ -73,6 +73,7 @@ async function consumeStream(stream: ReadableStream<Uint8Array>, onContent: (con
   const decoder = new TextDecoder();
   let buffer = "";
   let content = "";
+  let isComplete = false;
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
@@ -80,6 +81,8 @@ async function consumeStream(stream: ReadableStream<Uint8Array>, onContent: (con
     const parsed = extractSseContent(buffer);
     buffer = parsed.rest;
     content += parsed.content;
+    isComplete ||= parsed.isComplete;
     onContent(content);
   }
+  if (!isComplete) throw new Error("生成意外中断，当前内容可能不完整，请重新发送或缩短要求");
 }
